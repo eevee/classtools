@@ -1,0 +1,5 @@
+*.pyc
+*.swp
+.*.sw*
+.coverage
+__pycache__
