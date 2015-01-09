@@ -26,7 +26,7 @@ class classproperty(object):
         desc.fdel = fdel
         try:
             desc.__doc__ = fget.__doc__
-        except Exception:
+        except Exception:  # pragma: no cover
             pass
 
     def __get__(desc, self, cls):
@@ -95,7 +95,7 @@ class reify(object):
         self.wrapped = wrapped
         try:
             self.__doc__ = wrapped.__doc__
-        except Exception:
+        except Exception:  # pragma: no cover
             pass
 
     def __get__(self, inst, objtype=None):

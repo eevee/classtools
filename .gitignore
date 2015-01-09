@@ -2,4 +2,6 @@
 *.swp
 .*.sw*
 .coverage
+.tox
+/*.egg-info
 __pycache__

@@ -1,5 +1,7 @@
 import gc
 
+import pytest
+
 from classtools import classproperty
 from classtools import frozenproperty
 from classtools import keyed_ordering
@@ -56,6 +58,8 @@ def test_weakattr():
     class Dummy(object):
         pass
 
+    assert isinstance(Foo.bar, weakattr)
+
     obj = Dummy()
     foo = Foo(obj)
     assert foo.bar is obj
@@ -111,3 +115,34 @@ def test_keyed_ordering():
     assert q >= q
 
     assert p != (p.x, p.y)
+
+    @keyed_ordering
+    class PartiallyOrderedClass(object):
+        def __init__(self, attr):
+            self.attr = attr
+
+        def __eq__(self, other):
+            return True
+
+        def __key__(self):
+            return self.attr
+
+    # TODO seems useful to have something to fill in __ne__ for you, without
+    # needing __key__.  maybe a @partial_ordering, that only fills in the
+    # methods it can?  (or, even better, does it perl-style?)
+    # TODO also, no way to extend this to allow comparisons with other classes
+    # atm
+    a = PartiallyOrderedClass(1)
+    b = PartiallyOrderedClass(2)
+
+    assert a == b
+    assert b == a
+    assert a == 5
+    assert a != b
+    assert b != a
+    assert a < b
+
+    with pytest.raises(TypeError):
+        @keyed_ordering
+        class NoKeyMethod(object):
+            pass
