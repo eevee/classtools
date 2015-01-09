@@ -1,3 +1,6 @@
+"""Collection of small class-related utilities that will hopefully save you a
+tiny bit of grief, in the vein of itertools and functools.
+"""
 import operator
 import weakref
 
@@ -134,10 +137,11 @@ class weakattr(object):
     None
 
     Of course, if you try to assign a value that can't be weak referenced,
-    you'll get a `TypeError`.  So don't do that.  In particular,
+    you'll get a ``TypeError``.  So don't do that.  In particular, a lot of
+    built-in types can't be weakref'd!
 
-    Note that due to the `__dict__` twiddling, this descriptor will never
-    trigger `__getattr__`, `__setattr__`, or `__delattr__`.
+    Note that due to the ``__dict__`` twiddling, this descriptor will never
+    trigger ``__getattr__``, ``__setattr__``, or ``__delattr__``.
     """
     def __init__(self, name):
         self.name = name
