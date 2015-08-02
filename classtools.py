@@ -235,7 +235,8 @@ def keyed_ordering(cls):
     but makes this simple case tedious to set up.  There's the standard
     library's ``total_ordering`` decorator, but it still requires you to write
     essentially the same method twice, and doesn't correctly handle
-    ``NotImplemented`` before 3.4.
+    ``NotImplemented`` before 3.4.  It also doesn't automatically generate
+    ``__ne__`` from ``__eq__``, which is a common gotcha.
 
     With this decorator, comparisons will be done on the return value of
     ``__key__``, in much the same way as the ``key`` argument to ``sorted``.
@@ -266,6 +267,11 @@ def keyed_ordering(cls):
                 if not isinstance(other, TimeSpan):
                     return NotImplemented
                 return (self.start, self.end) == (other.start, other.end)
+
+            def __ne__(self, other):
+                if not isinstance(other, TimeSpan):
+                    return NotImplemented
+                return (self.start, self.end) != (other.start, other.end)
 
             def __lt__(self, other):
                 if not isinstance(other, TimeSpan):
